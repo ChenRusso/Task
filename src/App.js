@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Lobby from "./components/Lobby";
-import CodeBlock from "./components/CodeBlock";
+import BaseCase from "./components/BaseCase";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -38,7 +38,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Lobby />} />
-          <Route path="/code-block/:name" element={<CodeBlock />} />
+          <Route path="/code-block/:id" component={BaseCase} />
         </Routes>
       </Router>
 
@@ -51,12 +51,10 @@ const App = () => {
         onBlur={handleStopTyping} // Notify stop typing
       />
       <button onClick={sendMessage}>Send</button>
-      <h1>Message:</h1>
       {messageReceived}
     </div>
   );
 };
 
 export default App;
-
 
