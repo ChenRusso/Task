@@ -1,0 +1,31 @@
+.code-editor .language-javascript {
+    background-color: #282a36; /* Dark purple background */
+    color: #f8f8f2; /* White text color */
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+}
+
+.code-editor .language-javascript::before {
+    content: 'JavaScript';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #50fa7b;
+}
+
+.code-editor .language-javascript:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #6272a4;
+    box-sizing: border-box;
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
