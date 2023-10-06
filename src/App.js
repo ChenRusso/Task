@@ -11,6 +11,7 @@ const App = () => {
   const [messageReceived, setMessageReceived] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
+
   const sendMessage = () => {
     socket.emit("send_message", { message });
   };
@@ -38,10 +39,9 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Lobby />} />
-          <Route path="/code-block/:id" component={BaseCase} />
+          <Route path="/code-block/:id" element={<BaseCase />} />
         </Routes>
       </Router>
-
       <input
         placeholder="Message..."
         onChange={(event) => {

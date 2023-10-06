@@ -82,38 +82,58 @@ import { useParams } from 'react-router-dom';
 const socket = io.connect('http://localhost:3001');
 
 const BaseCase = () => {
+
   const codeRef = useRef(null);
   const { id } = useParams();
+  const [messageReceived, setMessageReceived] = useState(null);
+  const [questionReceived, setQuestionReceived] = useState("");
 
-  const [messageReceived, setMessageReceived] = useState('');
+
+  const getQuestionCodeById = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/request_question/${id}`);
+      const data = await response.json();
+      return data.question.code;  // Assuming the question is in a 'question' property
+    } catch (error) {
+      console.error('Error retrieving question code:', error);
+      throw error;  // Throw the error to handle it in the caller
+    }
+  };
 
   useEffect(() => {
-    const requestQuestionCode = async () => {
-      // Request the question code based on the extracted question ID
-      try {
-        const response = await fetch(`http://localhost:3001/request_question_code/${id}`);
-        const data = await response.json();
-        setMessageReceived(data);
-        hljs.highlightBlock(codeRef.current);
-        socket.emit('send_message', data);
-      } catch (error) {
-        console.error('Error fetching question code:', error);
-      }
-    };
-    requestQuestionCode();
-
+    //מאזין לאירוע בשם receive_message
+    // הדאטה זה מה שמקבלים מהשרת
     socket.on('receive_message', (data) => {
+      //אחראית להצגת ההודעה
       setMessageReceived(data);
+      //להדגיש בלוק קוד
       hljs.highlightBlock(codeRef.current);
     });
 
-    hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
-    hljs.highlightBlock(codeRef.current);
+
+// Call the function and log the result
+    getQuestionCodeById(id)
+      .then((questionCode) => {
+        console.log('Question Code:', questionCode);
+        setQuestionReceived(questionCode);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+
+    hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));//לציין שהקוד בJS
+    hljs.highlightBlock(codeRef.current);//הדגשת קוד ספציפי
   }, [id]);
 
+
+ //    מגדיר פונקציה המטפלת בשינויי קלט משתמש  הוא מעדכן את ממשק המשתמש כך שישקף את הקוד שהשתנה
   const handleUserCodeChange = (event) => {
     const updatedCode = event.target.innerText;
-    setMessageReceived(updatedCode);
+    // אחראית לעדכון ממשק המשתמש כדי להציג את הקוד המעודכן של המשתמש.
+    //setMessageReceived(updatedCode);
+    setQuestionReceived(updatedCode);
     hljs.highlightBlock(codeRef.current);
     socket.emit('send_message', updatedCode);
   };
@@ -132,6 +152,7 @@ const BaseCase = () => {
           suppressContentEditableWarning={true}
           onInput={handleUserCodeChange}
         >
+          {questionReceived}
           {messageReceived}
         </code>
       </pre>

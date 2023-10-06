@@ -56,14 +56,18 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on("request_question_code", ({ Id }) => {
-    const questionCode = getQuestionCodeById(Id);
-    // Send the question code back to the client
-    socket.emit("question_code_response", questionCode);
+
+  app.get('/request_question/:id', async (req, res) => {
+    const questionId = req.params.id;
+
+    try {
+      const question = await getQuestionCodeById(questionId);
+      res.json({ question });
+    } catch (error) {
+      console.error('Error getting question:', error);
+      res.status(500).json({ error: 'Error getting question' });
+    }
   });
-
-
-
 
 });
 
@@ -97,7 +101,7 @@ const getQuestionCodeById = async (id) => {
     // Log the questions to the console
     console.log('Question:', question);
 
-    return question.code;
+    return question;
   } catch (error) {
     console.error('Error retrieving questions:', error);
   }
