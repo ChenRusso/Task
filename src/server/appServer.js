@@ -70,6 +70,29 @@ io.on('connection', (socket) => {
     socket.emit('receive_is_first_user', socket.id === firstSocketIdConnected);
   });
 
+  socket.on("question_answer",async (id)=>{
+    try {
+      const questionsAnswer = await getQuestionAnswerById(id);
+      socket.emit('send_question_answer', questionsAnswer);  // Send questions to the client who requested
+    } catch (error) {
+      console.error('Error getting questions:', error);
+    }
+  })
+
+  socket.on('question_code_by_id', async (id) => {
+    try {
+      const questionsCodeById = await getQuestionCodeById(id);
+      socket.emit('send_question_code_by_id', questionsCodeById); // Send questions to the client who requested
+    } catch (error) {
+      console.error('Error getting questions:', error);
+      // Emit an error event to the client
+      socket.emit('question_code_error', error.message);
+    }
+  });
+
+
+
+
   app.get('/request_question/:id', async (req, res) => {
     const questionId = req.params.id;
 
@@ -113,6 +136,16 @@ const getQuestionCodeById = async (id) => {
   }
 };
 
+const getQuestionAnswerById = async (id) => {
+  try {
+    // Get all the questions from the database
+    const question = await questionModel.findById(id);
+
+    return question.answer;
+  } catch (error) {
+    console.error('Error retrieving questions:', error);
+  }
+};
 
 
 
