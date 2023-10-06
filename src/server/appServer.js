@@ -64,7 +64,6 @@ io.on('connection', (socket) => {
     }
   });
 
-
   socket.on('is_first_user', () => {
     console.log(socket.id)
     console.log(firstSocketIdConnected)

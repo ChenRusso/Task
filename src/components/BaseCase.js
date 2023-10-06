@@ -23,6 +23,7 @@ const BaseCase = () => {
     }
   };
 
+
   useEffect(() => {
     //מאזין לאירוע בשם receive_message
     // הדאטה זה מה שמקבלים מהשרת
