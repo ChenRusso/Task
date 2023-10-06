@@ -42,15 +42,6 @@ const App = () => {
           <Route path="/code-block/:id" element={<BaseCase />} />
         </Routes>
       </Router>
-      <input
-        placeholder="Message..."
-        onChange={(event) => {
-          setMessage(event.target.value);
-          socket.emit("send_message", { message });
-        }}
-        onBlur={handleStopTyping} // Notify stop typing
-      />
-      <button onClick={sendMessage}>Send</button>
       {messageReceived}
     </div>
   );

@@ -85,7 +85,7 @@ const BaseCase = () => {
 
   const codeRef = useRef(null);
   const { id } = useParams();
-  const [messageReceived, setMessageReceived] = useState(null);
+  const [messageReceived, setMessageReceived] = useState("");
   const [questionReceived, setQuestionReceived] = useState("");
 
 
@@ -116,6 +116,7 @@ const BaseCase = () => {
       .then((questionCode) => {
         console.log('Question Code:', questionCode);
         setQuestionReceived(questionCode);
+        setMessageReceived(questionCode);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -132,7 +133,7 @@ const BaseCase = () => {
   const handleUserCodeChange = (event) => {
     const updatedCode = event.target.innerText;
     // אחראית לעדכון ממשק המשתמש כדי להציג את הקוד המעודכן של המשתמש.
-    //setMessageReceived(updatedCode);
+    setMessageReceived(updatedCode);
     setQuestionReceived(updatedCode);
     hljs.highlightBlock(codeRef.current);
     socket.emit('send_message', updatedCode);
@@ -142,7 +143,6 @@ const BaseCase = () => {
     <div className="code-editor">
       <div>
         <h2>Question:</h2>
-        <p>{messageReceived}</p>
       </div>
       <pre>
         <code
@@ -152,7 +152,6 @@ const BaseCase = () => {
           suppressContentEditableWarning={true}
           onInput={handleUserCodeChange}
         >
-          {questionReceived}
           {messageReceived}
         </code>
       </pre>
