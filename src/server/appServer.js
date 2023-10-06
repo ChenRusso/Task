@@ -64,12 +64,12 @@ io.on('connection', (socket) => {
     }
   });
 
+
   socket.on('is_first_user', () => {
     console.log(socket.id)
     console.log(firstSocketIdConnected)
     socket.emit('receive_is_first_user', socket.id === firstSocketIdConnected);
   });
-
 
   app.get('/request_question/:id', async (req, res) => {
     const questionId = req.params.id;
@@ -113,6 +113,8 @@ const getQuestionCodeById = async (id) => {
     console.error('Error retrieving questions:', error);
   }
 };
+
+
 
 
 

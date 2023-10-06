@@ -7,7 +7,7 @@ import {socket} from "../App";
 
 const BaseCase = () => {
 
-  const codeRef = useRef(null);
+  const codeRef = useRef({});
   const { id } = useParams();
   const [messageReceived, setMessageReceived] = useState("");
   const [isFirstUser, setIsFirstUser] = useState(false);
@@ -30,7 +30,7 @@ const BaseCase = () => {
       //אחראית להצגת ההודעה
       setMessageReceived(data);
       //להדגיש בלוק קוד
-      hljs.highlightBlock(codeRef.current);
+      // hljs.highlightBlock(codeRef.current);
     });
 
     socket.emit('is_first_user');
@@ -58,6 +58,7 @@ const BaseCase = () => {
  //    מגדיר פונקציה המטפלת בשינויי קלט משתמש  הוא מעדכן את ממשק המשתמש כך שישקף את הקוד שהשתנה
   const handleUserCodeChange = (event) => {
     const updatedCode = event.target.innerText;
+
     // אחראית לעדכון ממשק המשתמש כדי להציג את הקוד המעודכן של המשתמש.
     setMessageReceived(updatedCode);
     hljs.highlightBlock(codeRef.current);
@@ -65,6 +66,7 @@ const BaseCase = () => {
   };
 
   return (
+
     <div className="code-editor">
       <div>
         <h2>Question:</h2>
@@ -85,3 +87,5 @@ const BaseCase = () => {
 };
 
 export default BaseCase;
+
+
