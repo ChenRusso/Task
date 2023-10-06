@@ -18,6 +18,8 @@ const io = new Server(server, {
 
 const mongoURI = "mongodb+srv://chenrussotask:LianBar1@moveohometask.rqlck7m.mongodb.net/ProgrammingQuestions"
 
+let firstSocketIdConnected = null;  // Variable to store the first connected user's socket ID
+
 async function connectToMongoDB() {
   console.log('Calling connectToMongoDB...');  // Add this line
   try {
@@ -33,7 +35,13 @@ async function connectToMongoDB() {
 }
 
 io.on('connection', (socket) => {
+
   console.log(`User Connected: ${socket.id}`);
+
+  if (firstSocketIdConnected === null) {
+    firstSocketIdConnected = socket.id;
+    console.log(`First user connected: ${firstSocketIdConnected}`);
+  }
 
   socket.on('send_message', (data) => {
     io.emit('receive_message', data);
@@ -54,6 +62,12 @@ io.on('connection', (socket) => {
     } catch (error) {
       console.error('Error getting questions:', error);
     }
+  });
+
+  socket.on('is_first_user', () => {
+    console.log(socket.id)
+    console.log(firstSocketIdConnected)
+    socket.emit('receive_is_first_user', socket.id === firstSocketIdConnected);
   });
 
 
@@ -83,23 +97,16 @@ const getQuestions = async () => {
     // Get all the questions from the database
     const questions = await questionModel.find({});
 
-    // Log the questions to the console
-    console.log('Questions:', questions);
-
     return questions;
   } catch (error) {
     console.error('Error retrieving questions:', error);
   }
 };
 
-
 const getQuestionCodeById = async (id) => {
   try {
     // Get all the questions from the database
     const question = await questionModel.findById(id);
-
-    // Log the questions to the console
-    console.log('Question:', question);
 
     return question;
   } catch (error) {

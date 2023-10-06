@@ -1,93 +1,16 @@
-/*import React, { useState, useEffect, useRef } from 'react';
-import hljs from 'highlight.js/lib/core';
-import 'highlight.js/lib/languages/javascript';
-import './CodeEditor.css';  // Import the updated CSS file
-import io from "socket.io-client";
-import { useParams} from "react-router-dom";
-
-const socket = io.connect("http://localhost:3001");
-
-const BaseCase = () => {
-  const codeRef = useRef(null);
-  const { Id } = useParams();
-  const requestQuestionCode = () => {
-    socket.emit("request_question_code", { Id });
-  };
-  // const code = `
-  //   const numbers = [1, 2, 3, 4, 5];
-  //   let sum = 0;
-  //
-  //   for (let i = 0; i < numbers.length; i++) {
-  //     // Add the current element to the sum - Add your code here
-  //   }
-  //
-  //   console.log('The sum of the numbers is: ' + sum);
-  // `;
-
-  const [messageReceived, setMessageReceived] = useState();
-
-  const handleUserCodeChange = (event) => {
-    const updatedCode = event.target.innerText;
-    setMessageReceived(updatedCode);
-    hljs.highlightBlock(codeRef.current);
-    socket.emit("send_message", updatedCode);
-  };
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMessageReceived(data);
-      hljs.highlightBlock(codeRef.current);
-    });
-  }, [socket]);
-
-
-
-
-
-  useEffect(() => {
-    hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
-    hljs.highlightBlock(codeRef.current);
-  }, []);
-
-  return (
-    <div className="code-editor">
-      <div>
-        hello!!
-      </div>
-      <pre>
-        <code
-          ref={codeRef}
-          className="language-javascript"
-          contentEditable="true"
-          suppressContentEditableWarning={true}
-          onInput={handleUserCodeChange}
-        >
-          {messageReceived}
-        </code>
-      </pre>
-    </div>
-  );
-};
-
-export default BaseCase;
-
- */
 import React, { useState, useEffect, useRef } from 'react';
 import hljs from 'highlight.js/lib/core';
 import 'highlight.js/lib/languages/javascript';
 import './CodeEditor.css';
-import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
-
-const socket = io.connect('http://localhost:3001');
+import {socket} from "../App";
 
 const BaseCase = () => {
 
   const codeRef = useRef(null);
   const { id } = useParams();
   const [messageReceived, setMessageReceived] = useState("");
-  const [questionReceived, setQuestionReceived] = useState("");
-
+  const [isFirstUser, setIsFirstUser] = useState(false);
 
   const getQuestionCodeById = async (id) => {
     try {
@@ -110,18 +33,21 @@ const BaseCase = () => {
       hljs.highlightBlock(codeRef.current);
     });
 
+    socket.emit('is_first_user');
 
-// Call the function and log the result
+    socket.on('receive_is_first_user', (isFirst) => {
+      console.log( "is first ? " + isFirst)
+      setIsFirstUser(isFirst);
+    });
+
+
     getQuestionCodeById(id)
       .then((questionCode) => {
-        console.log('Question Code:', questionCode);
-        setQuestionReceived(questionCode);
         setMessageReceived(questionCode);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-
 
 
     hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));//לציין שהקוד בJS
@@ -134,7 +60,6 @@ const BaseCase = () => {
     const updatedCode = event.target.innerText;
     // אחראית לעדכון ממשק המשתמש כדי להציג את הקוד המעודכן של המשתמש.
     setMessageReceived(updatedCode);
-    setQuestionReceived(updatedCode);
     hljs.highlightBlock(codeRef.current);
     socket.emit('send_message', updatedCode);
   };
@@ -148,7 +73,7 @@ const BaseCase = () => {
         <code
           ref={codeRef}
           className="language-javascript"
-          contentEditable="true"
+          contentEditable={!isFirstUser}
           suppressContentEditableWarning={true}
           onInput={handleUserCodeChange}
         >

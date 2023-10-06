@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
+import {socket} from "../App";
+
 
 const Lobby = () => {
+
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
 
   const handleSocketConnection = () => {
-    const socket = io('http://localhost:3001');
 
-    socket.on('connect', () => {
-      console.log('Connected to server');
-      socket.emit('get_all_questions');
+    socket.emit('get_all_questions', () => {
     });
 
     socket.on('send_questions', (receivedQuestions) => {
