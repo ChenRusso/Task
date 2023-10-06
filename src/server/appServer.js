@@ -79,19 +79,16 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('question_code_by_id', async (id) => {
+  /*socket.on('question_code_by_id', async (id) => {
     try {
       const questionsCodeById = await getQuestionCodeById(id);
       socket.emit('send_question_code_by_id', questionsCodeById); // Send questions to the client who requested
     } catch (error) {
       console.error('Error getting questions:', error);
-      // Emit an error event to the client
-      socket.emit('question_code_error', error.message);
     }
   });
 
-
-
+   */
 
   app.get('/request_question/:id', async (req, res) => {
     const questionId = req.params.id;

@@ -77,7 +77,7 @@ const BaseCase = () => {
     hljs.highlightBlock(codeRef.current);
   }, [id]);
 
-  const handleUserCodeChange = (event) => {
+    const handleUserCodeChange = (event) => {
     const updatedCode = event.target.innerText;
     setMessageReceived(updatedCode);
     hljs.highlightBlock(codeRef.current);

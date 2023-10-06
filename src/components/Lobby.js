@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 import {socket} from "../App";
-
+import './Loby.css';  // Import the CSS file for the Lobby component
 
 const Lobby = () => {
 
@@ -33,7 +33,7 @@ const Lobby = () => {
   }, []);
 
   return (
-    <div>
+    <div className="lobby-container">
       <h1>Choose Code Block</h1>
       {error ? (
         <p>Error: {error}</p>
@@ -51,7 +51,6 @@ const Lobby = () => {
             <p>Loading questions...</p>
           )}
         </ul>
-
       )}
     </div>
   );
