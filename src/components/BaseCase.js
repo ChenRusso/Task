@@ -4,24 +4,23 @@ import 'highlight.js/lib/languages/javascript';
 import './CodeEditor.css';
 import { useParams } from 'react-router-dom';
 import { socket } from "../App";
-import SmileyImage from '../images/Smiley.png'; // Adjust the path accordingly
+import SmileyImage from '../images/Smiley.png';
 
 const BaseCase = () => {
 
   const codeRef = useRef({});
-  const { id } = useParams();
+  const { id } = useParams(); //Holds the ID of the question
   const [messageReceived, setMessageReceived] = useState("");
-  const [isFirstUser, setIsFirstUser] = useState(false);
+  const [isFirstUser, setIsFirstUser] = useState(false); // State to check first User
   const [userAnswer, setUserAnswer] = useState(""); // State to hold user's answer
 
   const getQuestionCodeById = async (id) => {
     try {
       const response = await fetch(`http://localhost:3001/request_question/${id}`);
       const data = await response.json();
-      return data.question.code;  // Assuming the question is in a 'question' property
+      return data.question.code;
     } catch (error) {
-      console.error('Error retrieving question code:', error);
-      throw error;  // Throw the error to handle it in the caller
+      throw error;
     }
   };
 
@@ -36,8 +35,13 @@ const BaseCase = () => {
       // Compare user's answer with the normalized correct answer
       const isAnswerCorrect = normalizedUserAnswer === normalizedCorrectAnswer;
       if (isAnswerCorrect) {
-        // Display the PNG image
-        setMessageReceived(<img src={SmileyImage} alt="Smiley" />);
+        // Display the PNG image with caption
+        setMessageReceived(
+          <div>
+            <img src={SmileyImage} alt="Smiley" />
+            <p>Well done, correct answer!</p>
+          </div>
+        );
       } else {
         alert('Your answer is incorrect. Please try again.');
       }
@@ -86,6 +90,7 @@ const BaseCase = () => {
   };
 
   return (
+    <div className="page-container">
     <div className="code-editor">
       <div>
         <h2>Question:</h2>
@@ -101,9 +106,10 @@ const BaseCase = () => {
           {messageReceived}
         </code>
       </pre>
-      <button onClick={handleCodeSubmit} disabled={isFirstUser}>
+      <button className="enlarged-button" onClick={handleCodeSubmit} disabled={isFirstUser}>
         Submit
       </button>
+    </div>
     </div>
   );
 };

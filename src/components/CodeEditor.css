@@ -1,8 +1,29 @@
-/* CodeEditor.css */
 
 .code-editor {
     margin: 20px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
 }
+
+.code-editor h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.code-editor button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+
+.language-javascript {
+    font-size: 24px;
+}
+
+
 
 .code-editor pre {
     padding: 10px;
@@ -14,3 +35,21 @@
     line-height: 1.5;
     overflow-x: auto;
 }
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/computer.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+

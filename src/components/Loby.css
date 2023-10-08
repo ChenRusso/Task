@@ -1,16 +1,13 @@
-/* Lobby.css */
 
 .lobby-container {
     position: relative;
-    background-image: url('../images/AppImage.jpg');
+    background-image: url('../images/AppImage.webp');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: calc(10px + 2vmin);
     color: black;
 }
@@ -21,16 +18,16 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control the overlay darkness */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 
 .lobby-container h1 {
     margin-bottom: 20px;
-    font-weight: bold; /* Make the h1 title bold */
+    font-weight: bold;
 }
 
 .lobby-container ul li a {
-    font-weight: bold; /* Make the text inside <li> elements bold */
+    font-weight: bold;
     color: black;
 }

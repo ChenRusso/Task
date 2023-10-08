@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
 import {socket} from "../App";
-import './Loby.css';  // Import the CSS file for the Lobby component
+import './Loby.css';
 
 const Lobby = () => {
 
@@ -15,7 +14,6 @@ const Lobby = () => {
     });
 
     socket.on('send_questions', (receivedQuestions) => {
-      console.log('Received questions:', receivedQuestions);
       setQuestions(receivedQuestions);
     });
 

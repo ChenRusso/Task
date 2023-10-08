@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import io from "socket.io-client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Lobby from "./components/Lobby";
