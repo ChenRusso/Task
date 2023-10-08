@@ -4,7 +4,6 @@ import {socket} from "../App";
 import './Loby.css';
 
 const Lobby = () => {
-
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState(null);
 

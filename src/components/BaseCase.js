@@ -14,15 +14,32 @@ const BaseCase = () => {
   const [isFirstUser, setIsFirstUser] = useState(false); // State to check first User
   const [userAnswer, setUserAnswer] = useState(""); // State to hold user's answer
 
+
   const getQuestionCodeById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/request_question/${id}`);
-      const data = await response.json();
-      return data.question.code;
+      return new Promise((resolve, reject) => {
+        // Request the question code from the server via socket
+        socket.emit('request_question_code', id);
+
+        // Listen for the response from the server
+        socket.once('send_question_code', (data) => {
+          if (data && data.question) {
+            resolve(data.question.code);
+          } else {
+            reject(new Error('No question code received'));
+          }
+        });
+
+        // Listen for any errors
+        socket.once('error', (error) => {
+          reject(new Error(error.message));
+        });
+      });
     } catch (error) {
       throw error;
     }
   };
+
 
   const handleCodeSubmit = () => {
     // Define a function to handle the answer event
