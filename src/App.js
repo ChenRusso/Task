@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Lobby from "./components/Lobby";
 import BaseCase from "./components/BaseCase";
 
-export const socket = io.connect("http://localhost:3001");
+export const socket = io.connect("https://moveo-server.onrender.com");
 
 const App = () => {
 
